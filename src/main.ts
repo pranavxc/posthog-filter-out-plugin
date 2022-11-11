@@ -19,7 +19,7 @@ export interface PluginMeta
 
 const operations: Record<
   Filter["type"],
-  Record<string, (a: any, b: any) => boolean>
+  Record<string, (a: any, b: any, c?: any) => boolean>
 > = {
   string: {
     is: (a, b) => a === b,
@@ -36,6 +36,7 @@ const operations: Record<
     lte: (a, b) => a <= b,
     eq: (a, b) => a === b,
     neq: (a, b) => a !== b,
+    mod: (a, b, divisor) => (a % divisor) === b
   },
   boolean: {
     is: (a, b) => a === b,
@@ -81,8 +82,12 @@ export function processEvent(
 
     const operation = operations[filter.type][filter.operator];
     if (!operation) throw new Error(`Invalid operator ${filter.operator}`);
-
-    return operation(value, filter.value);
+    
+    if(filter.operator === 'mod') {
+       return operation(value, filter.value, filter.divisor);
+    } else {
+       return operation(value, filter.value);
+    }
   });
 
   // If should keep the event, return it, else return undefined
