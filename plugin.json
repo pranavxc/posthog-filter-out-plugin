@@ -1,5 +1,5 @@
 {
-  "name": "Filter Out Plugin",
+  "name": "Filter Out Plugin - Custom",
   "url": "https://github.com/plibither8/posthog-filter-out-plugin",
   "description": "Filter out events where property values satisfy the given condition",
   "main": "src/main.ts",
